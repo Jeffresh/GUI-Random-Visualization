@@ -35,6 +35,10 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
     private static JMenuBar nav_bar;
     private static GenericChart chart;
     private static String gui_title = "Random Generator Display";
+    private static String[] engine_generator_names = {
+            "generator261a", "generator261b", "generator262", "generator263", "generatorFishmanAndMore1",
+            "generatorFishmanAndMore2", "generatorRandu","generatorCombinedWXY",
+    };
 
 
     @NotNull
@@ -106,25 +110,34 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
         return nav_bar;
     }
 
-    private static JTextField tnumericVar, tstringVar;
+    private static JTextField textfield_number_randoms, textfield_seed, textfield_engines_list;
 
-    private static JButton initialize, startcpmlt, stopcpmlt;
+    private static JButton initialize_button, start_button, stop_button;
+
+    private static JComboBox  generator_list_combo_box;
 
     private JSplitPane createTextFields() {
 
-        tnumericVar  = new JTextField();
-        tnumericVar.setText(Double.toString(numericVar));
-        tnumericVar.addFocusListener(this);
+        textfield_number_randoms = new JTextField();
+        textfield_number_randoms.setText(Double.toString(default_number_randoms));
+        textfield_number_randoms.addFocusListener(this);
 
-        tstringVar = new JTextField();
-        tstringVar.setText(stringVar);
-        tstringVar.addFocusListener(this);
+        textfield_seed = new JTextField();
+        textfield_seed.setText(Double.toString(default_seed));
+        textfield_seed.addFocusListener(this);
 
-        JLabel lnumericVar = new JLabel("Numeric Variable: ");
-        lnumericVar.setLabelFor(tnumericVar);
+        textfield_engines_list= new JTextField();
+        textfield_engines_list.setText(Double.toString(default_seed));
+        textfield_engines_list.addFocusListener(this);
 
-        JLabel lstringVar = new JLabel("String Variable: ");
-        lstringVar.setLabelFor(tstringVar);
+        JLabel label_number_randoms = new JLabel("Number of randoms: ");
+        label_number_randoms.setLabelFor(textfield_number_randoms);
+
+        JLabel label_seed = new JLabel("Seed: ");
+        label_seed.setLabelFor(textfield_seed);
+
+        JLabel label_engines = new JLabel("Random Engines");
+        label_engines.setLabelFor(textfield_engines_list);
 
         //Lay out the text controls and the labels
         JPanel textControlsPane = new JPanel();
@@ -134,30 +147,35 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
         textControlsPane.setPreferredSize(new Dimension(100, 900));
         textControlsPane.setMinimumSize(new Dimension(100, 900));
 
-        JLabel[] labels = {lnumericVar, lstringVar};
+        JLabel[] labels = {label_number_randoms, label_seed, label_engines};
 
-        JTextField[] textFields = {tnumericVar, tstringVar}; 
+        JTextField[] textFields = {textfield_number_randoms, textfield_seed};
+        generator_list_combo_box = new JComboBox(engine_generator_names);
+        generator_list_combo_box.addFocusListener(this);
 
-        addLabelTextRows(labels,textFields,textControlsPane);
+        JComboBox[] combo_box_list = {generator_list_combo_box};
+
+
+        addLabelTextRows(labels, textFields, combo_box_list, textControlsPane);
 
         textControlsPane.setBorder(
                                    BorderFactory.createCompoundBorder(
                                                                       BorderFactory.createTitledBorder("Variables"),
                                                                       BorderFactory.createEmptyBorder(5,5,5,5)));
-        initialize = new JButton("Initialize");
-        initialize.addActionListener(this);
+        initialize_button = new JButton("Initialize");
+        initialize_button.addActionListener(this);
 
-        startcpmlt = new JButton("Start");
-        startcpmlt.addActionListener(this);
+        start_button = new JButton("Start");
+        start_button.addActionListener(this);
 
-        stopcpmlt = new JButton("Stop");
-        stopcpmlt.addActionListener(this);
+        stop_button = new JButton("Stop");
+        stop_button.addActionListener(this);
 
         JPanel botonesPane = new JPanel();
 
-        botonesPane.add(initialize,BorderLayout.CENTER);
-        botonesPane.add(startcpmlt,BorderLayout.CENTER);
-        botonesPane.add(stopcpmlt,BorderLayout.CENTER);
+        botonesPane.add(initialize_button,BorderLayout.CENTER);
+        botonesPane.add(start_button,BorderLayout.CENTER);
+        botonesPane.add(stop_button,BorderLayout.CENTER);
 
         botonesPane.setPreferredSize(new Dimension(100, 20));
         botonesPane.setMaximumSize(new Dimension(100, 20));
@@ -183,15 +201,14 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
  
 
     private void addLabelTextRows(JLabel[] labels, JTextField[] textFields,
-                                  //   JComboBox[] list,
+                                     JComboBox[] combo_box_list,
                                   Container container){
 
         GridBagConstraints c = new GridBagConstraints();
         c.anchor = GridBagConstraints.WEST;
         int numLabels = labels.length;
-        // int numlist = list.length;
 
-        for (int i = 0; i < numLabels; i++){
+        for (int i = 0; i < numLabels-1; i++){
 
         	labels[i].setFont(new Font(null, Font.PLAIN,20));
         	textFields[i].setFont(new Font(null, Font.PLAIN,20));
@@ -207,6 +224,21 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
             textFields[i].setColumns(3);
             container.add(textFields[i], c);
         }
+
+        labels[numLabels-1].setFont(new Font(null, Font.PLAIN,20));
+        combo_box_list[0].setFont(new Font(null, Font.PLAIN,20));
+        c.gridwidth = GridBagConstraints.RELATIVE; //next-to-last
+        c.fill = GridBagConstraints.NONE;      //reset to default
+        c.weightx = 1.0;                       //reset to default
+//            c.gridheight = 19;
+        container.add(labels[numLabels-1], c);
+
+        c.gridwidth = GridBagConstraints.REMAINDER;     //end row
+        c.fill = GridBagConstraints.NONE;
+        c.weightx = 1.0;
+//        combo_box_list[0].setColumns(3);
+        container.add(combo_box_list[0], c);
+
         
     }
 
@@ -244,9 +276,9 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
 
     private static Canvas caClassTemplate;
 
-    private static double numericVar = 33 ;
+    private static double default_number_randoms = 5 ;
+    private static double default_seed = 1;
 
-    private static String stringVar = "Hello World";
     private static JLabel lnumeric_var_value;
     private static JLabel lstring_var_value;
     private static int value = 0;
@@ -331,25 +363,25 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
             showURI(uri);
         }
         
-        if(e.getSource()==stopcpmlt) {
+        if(e.getSource()== stop_button) {
             worker.cancel(true);
             worker.cancel(false);
             RandomDisplayTask.stop();
         }
 
-        if(e.getSource() == initialize) {
+        if(e.getSource() == initialize_button) {
 
             deleteCanvasLabels();
             Canvas.objectNV = new RandomDisplayTask();
             Canvas.objectNV.plug(caClassTemplate);
             Canvas.objectNV.initializer(value);
 
-            lnumeric_var_value = new JLabel(Double.toString(numericVar));
+            lnumeric_var_value = new JLabel(Double.toString(default_number_randoms));
             lnumeric_var_value.setFont(new Font(null, Font.PLAIN,50));
             caClassTemplate.add(lnumeric_var_value);
 
 
-            lstring_var_value = new JLabel(stringVar);
+            lstring_var_value = new JLabel(Double.toString(default_seed));
             lstring_var_value.setFont(new Font(null, Font.PLAIN,50));
             caClassTemplate.add(lstring_var_value);
 
@@ -359,14 +391,14 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
 
         }
 
-        if(e.getSource()==startcpmlt) {
+        if(e.getSource()== start_button) {
             worker = new SwingWorker<Void, GuiRandomNumberDisplay>()
             {
                 @Override
                 protected Void doInBackground() {
                     try{
                         deleteCanvasLabels();
-                        Canvas.objectNV.computeClassNV((int)floor(numericVar));
+                        Canvas.objectNV.computeClassNV((int)floor(default_number_randoms));
                     }
                     catch(Exception ex){System.out.println("Worker exception");}
                     return null;
@@ -387,12 +419,12 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
 
             try {
 
-                if (e.getSource() == tnumericVar) {
-                    nump = tnumericVar.getText();
+                if (e.getSource() == textfield_number_randoms) {
+                    nump = textfield_number_randoms.getText();
                     if (!nump.equals("")) {
-                        numericVar = Double.parseDouble(nump);
-                        if (numericVar < 0 || numericVar > 1000) {
-                            numericVar = 0;
+                        default_number_randoms = Double.parseDouble(nump);
+                        if (default_number_randoms < 0 || default_number_randoms > 1000) {
+                            default_number_randoms = 0;
                             throw new Exception("Invalid Number");
 
                         }
@@ -408,11 +440,11 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
 
             }
 
-            if(e.getSource() == tstringVar) {
-                nump = tstringVar.getText();
-                stringVar = nump;
-
-            }
+//            if(e.getSource() == textfield_seed) {
+//                nump = textfield_seed.getText();
+//                default_seed = nump;
+//
+//            }
 
     }
     
