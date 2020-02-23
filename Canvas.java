@@ -9,22 +9,22 @@ import java.awt.image.BufferedImage;
  * @version: 1.0 23/07/19
  */
 
-class CanvasClassTemplate extends JPanel {
+class Canvas extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
 
     /** Object of the class that Needs Visualization (ONV)  */
-    public static ClassNV objectNV;
+    public static RandomDisplayTask objectNV;
     public static BufferedImage image_ref;
     public static int xMax;
     public static int yMax;
 
 
     /** Constructor of the class that works as a link between the classNV and the GUI */
-    public CanvasClassTemplate(int x_max, int y_max) {
+    public Canvas(int x_max, int y_max) {
 
-        objectNV = new ClassNV();
+        objectNV = new RandomDisplayTask();
         objectNV.plug(this);
         xMax = x_max;
         yMax = y_max;

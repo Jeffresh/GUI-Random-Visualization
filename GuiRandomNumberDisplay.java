@@ -27,13 +27,14 @@ import static java.lang.Math.floor;
 
 
 
-public class GuiTemplate extends Frame implements ActionListener, FocusListener {
+public class GuiRandomNumberDisplay extends Frame implements ActionListener, FocusListener {
 
     private static final long serialVersionUID = 1L;
 
     /** */
     private static JMenuBar nav_bar;
     private static GenericChart chart;
+    private static String gui_title = "Random Generator Display";
 
 
     @NotNull
@@ -158,9 +159,9 @@ public class GuiTemplate extends Frame implements ActionListener, FocusListener 
         botonesPane.add(startcpmlt,BorderLayout.CENTER);
         botonesPane.add(stopcpmlt,BorderLayout.CENTER);
 
-        botonesPane.setPreferredSize(new Dimension(100, 5));
-        botonesPane.setMaximumSize(new Dimension(100, 5));
-        botonesPane.setMinimumSize(new Dimension(100, 5));
+        botonesPane.setPreferredSize(new Dimension(100, 20));
+        botonesPane.setMaximumSize(new Dimension(100, 20));
+        botonesPane.setMinimumSize(new Dimension(100, 20));
 
         botonesPane.setBorder(
                   BorderFactory.createCompoundBorder(
@@ -212,18 +213,18 @@ public class GuiTemplate extends Frame implements ActionListener, FocusListener 
 
     private static  void createAndShowGUI(){
 
-        JFrame frame = new JFrame("Generic-Gui");
+        JFrame frame = new JFrame(gui_title);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(500,500));
-        frame.setJMenuBar(new GuiTemplate().createNavBar());
+        frame.setJMenuBar(new GuiRandomNumberDisplay().createNavBar());
 
         int xMax = 1000;
         int yMax = 1000;
-        caClassTemplate = new CanvasClassTemplate(xMax, yMax);
+        caClassTemplate = new Canvas(xMax, yMax);
         caClassTemplate.setPreferredSize(new Dimension(1000, 1000));
 
 
-        JSplitPane buttons = new GuiTemplate().createTextFields();
+        JSplitPane buttons = new GuiRandomNumberDisplay().createTextFields();
         chart = new GenericChart();
 //        JSplitPane tools = new JSplitPane(JSplitPane.VERTICAL_SPLIT, buttons, chart.chartpanel);
 
@@ -239,9 +240,9 @@ public class GuiTemplate extends Frame implements ActionListener, FocusListener 
 
     }
 
-    private static SwingWorker<Void,GuiTemplate> worker;
+    private static SwingWorker<Void, GuiRandomNumberDisplay> worker;
 
-    private static CanvasClassTemplate caClassTemplate;
+    private static Canvas caClassTemplate;
 
     private static double numericVar = 33 ;
 
@@ -283,7 +284,7 @@ public class GuiTemplate extends Frame implements ActionListener, FocusListener 
 //      frame.remove(window);
             value = 2;
             deleteCanvasLabels();
-            CanvasClassTemplate.objectNV.initializer(value);
+            Canvas.objectNV.initializer(value);
             caClassTemplate.revalidate();
             caClassTemplate.repaint();
         }
@@ -292,7 +293,7 @@ public class GuiTemplate extends Frame implements ActionListener, FocusListener 
 
             value = 3;
             deleteCanvasLabels();
-            CanvasClassTemplate.objectNV.initializer(value);
+            Canvas.objectNV.initializer(value);
             caClassTemplate.revalidate();
             caClassTemplate.repaint();
 
@@ -300,7 +301,7 @@ public class GuiTemplate extends Frame implements ActionListener, FocusListener 
 //
         if(e.getSource() == nav_bar.getMenu(1).getItem(0)){
 
-            worker = new SwingWorker<Void, GuiTemplate>()
+            worker = new SwingWorker<Void, GuiRandomNumberDisplay>()
             {
                 @Override
                 protected Void doInBackground() {
@@ -333,15 +334,15 @@ public class GuiTemplate extends Frame implements ActionListener, FocusListener 
         if(e.getSource()==stopcpmlt) {
             worker.cancel(true);
             worker.cancel(false);
-            ClassNV.stop();
+            RandomDisplayTask.stop();
         }
 
         if(e.getSource() == initialize) {
 
             deleteCanvasLabels();
-            CanvasClassTemplate.objectNV = new ClassNV();
-            CanvasClassTemplate.objectNV.plug(caClassTemplate);
-            CanvasClassTemplate.objectNV.initializer(value);
+            Canvas.objectNV = new RandomDisplayTask();
+            Canvas.objectNV.plug(caClassTemplate);
+            Canvas.objectNV.initializer(value);
 
             lnumeric_var_value = new JLabel(Double.toString(numericVar));
             lnumeric_var_value.setFont(new Font(null, Font.PLAIN,50));
@@ -359,13 +360,13 @@ public class GuiTemplate extends Frame implements ActionListener, FocusListener 
         }
 
         if(e.getSource()==startcpmlt) {
-            worker = new SwingWorker<Void, GuiTemplate>() 
+            worker = new SwingWorker<Void, GuiRandomNumberDisplay>()
             {
                 @Override
                 protected Void doInBackground() {
                     try{
                         deleteCanvasLabels();
-                        CanvasClassTemplate.objectNV.computeClassNV((int)floor(numericVar));
+                        Canvas.objectNV.computeClassNV((int)floor(numericVar));
                     }
                     catch(Exception ex){System.out.println("Worker exception");}
                     return null;
@@ -421,7 +422,7 @@ public class GuiTemplate extends Frame implements ActionListener, FocusListener 
         //creating and showing this application's GUI.
         javax.swing.
                 SwingUtilities.
-                invokeLater(GuiTemplate::createAndShowGUI);
+                invokeLater(GuiRandomNumberDisplay::createAndShowGUI);
     }
 }
 
