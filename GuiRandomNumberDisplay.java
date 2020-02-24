@@ -119,15 +119,15 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
     private JSplitPane createTextFields() {
 
         textfield_number_randoms = new JTextField();
-        textfield_number_randoms.setText(Double.toString(default_number_randoms));
+        textfield_number_randoms.setText(Double.toString(number_of_randoms_value));
         textfield_number_randoms.addFocusListener(this);
 
         textfield_seed = new JTextField();
-        textfield_seed.setText(Double.toString(default_seed));
+        textfield_seed.setText(Double.toString(seed_value));
         textfield_seed.addFocusListener(this);
 
         textfield_engines_list= new JTextField();
-        textfield_engines_list.setText(Double.toString(default_seed));
+        textfield_engines_list.setText(Double.toString(seed_value));
         textfield_engines_list.addFocusListener(this);
 
         JLabel label_number_randoms = new JLabel("Number of randoms: ");
@@ -201,7 +201,7 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
  
 
     private void addLabelTextRows(JLabel[] labels, JTextField[] textFields,
-                                     JComboBox[] combo_box_list,
+                                     JComboBox<String>[] combo_box_list,
                                   Container container){
 
         GridBagConstraints c = new GridBagConstraints();
@@ -279,12 +279,13 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
 
     private static Canvas caClassTemplate;
 
-    private static double default_number_randoms = 5 ;
-    private static double default_seed = 1;
+    private static double number_of_randoms_value = 5 ;
+    private static double seed_value = 1;
+    private static String combobox_value = "generator261a";
 
     private static JLabel lnumeric_var_value;
     private static JLabel lstring_var_value;
-    private static int value = 0;
+    private static int task = 0;
 
 
     public void showURI(String uri){
@@ -294,15 +295,6 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
             } catch (IOException | URISyntaxException ex) {
                 ex.printStackTrace();
             }
-        }
-
-    }
-
-    public void deleteCanvasLabels(@NotNull JLabel[] labels){
-
-        for(JLabel label: labels){
-            if(lstring_var_value!=null) caClassTemplate.remove(label);
-
         }
 
     }
@@ -317,27 +309,26 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
 
         if(e.getSource() == nav_bar.getMenu(0).getItem(0)) {
 //      frame.remove(window);
-            value = 2;
+            task = 2;
             deleteCanvasLabels();
-            Canvas.objectNV.initializer(value);
+            Canvas.objectNV.initializer(task);
             caClassTemplate.revalidate();
             caClassTemplate.repaint();
         }
 
         if(e.getSource() == nav_bar.getMenu(0).getItem(1)) {
 
-            value = 3;
+            task = 3;
             deleteCanvasLabels();
-            Canvas.objectNV.initializer(value);
+            Canvas.objectNV.initializer(task);
             caClassTemplate.revalidate();
             caClassTemplate.repaint();
 
         }
-//
+
         if(e.getSource() == nav_bar.getMenu(1).getItem(0)){
 
-            worker = new SwingWorker<Void, GuiRandomNumberDisplay>()
-            {
+            worker = new SwingWorker<Void, GuiRandomNumberDisplay>() {
                 @Override
                 protected Void doInBackground() {
                     try{
@@ -351,9 +342,6 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
                 }
             };
             worker.execute();
-
-
-
         }
 
         if(e.getSource()==nav_bar.getMenu(3).getItem(0)) {
@@ -377,14 +365,14 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
             deleteCanvasLabels();
             Canvas.objectNV = new RandomDisplayTask();
             Canvas.objectNV.plug(caClassTemplate);
-            Canvas.objectNV.initializer(value);
+            Canvas.objectNV.initializer(task);
 
-            lnumeric_var_value = new JLabel(Double.toString(default_number_randoms));
+            lnumeric_var_value = new JLabel(Double.toString(number_of_randoms_value));
             lnumeric_var_value.setFont(new Font(null, Font.PLAIN,50));
             caClassTemplate.add(lnumeric_var_value);
 
 
-            lstring_var_value = new JLabel(Double.toString(default_seed));
+            lstring_var_value = new JLabel(Double.toString(seed_value));
             lstring_var_value.setFont(new Font(null, Font.PLAIN,50));
             caClassTemplate.add(lstring_var_value);
 
@@ -401,7 +389,7 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
                 protected Void doInBackground() {
                     try{
                         deleteCanvasLabels();
-                        Canvas.objectNV.computeClassNV((int)floor(default_number_randoms));
+                        Canvas.objectNV.computeClassNV((int)floor(number_of_randoms_value));
                     }
                     catch(Exception ex){System.out.println("Worker exception");}
                     return null;
@@ -425,9 +413,9 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
                 if (e.getSource() == textfield_number_randoms) {
                     nump = textfield_number_randoms.getText();
                     if (!nump.equals("")) {
-                        default_number_randoms = Double.parseDouble(nump);
-                        if (default_number_randoms < 0 || default_number_randoms > 1000) {
-                            default_number_randoms = 0;
+                        number_of_randoms_value = Double.parseDouble(nump);
+                        if (number_of_randoms_value < 0) {
+                            number_of_randoms_value = 0;
                             throw new Exception("Invalid Number");
 
                         }
@@ -443,11 +431,22 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
 
             }
 
-//            if(e.getSource() == textfield_seed) {
-//                nump = textfield_seed.getText();
-//                default_seed = nump;
-//
-//            }
+            if(e.getSource() == textfield_seed) {
+                nump = textfield_seed.getText();
+                seed_value = Double.parseDouble(nump);
+
+            }
+
+            if(e.getSource() == generator_list_combo_box)
+ 	        {
+ 	        	JComboBox<String> cb = (JComboBox<String>)e.getSource();
+ 	            String op = (String)cb.getSelectedItem();
+                assert op != null;
+                op = op.toLowerCase();
+
+
+ 	        }
+
 
     }
     
