@@ -379,7 +379,7 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
                 protected Void doInBackground() {
                     try{
                         deleteCanvasLabels();
-                        Canvas.objectNV.computeClassNV((int)floor(number_of_randoms_value));
+                        Canvas.objectNV.computeClassNV(1);
                     }
                     catch(Exception ex){System.out.println("Worker exception");}
                     return null;
@@ -387,7 +387,6 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
             };
             worker.execute();
         }
-
 
     }
 
