@@ -119,15 +119,15 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
     private JSplitPane createTextFields() {
 
         textfield_number_randoms = new JTextField();
-        textfield_number_randoms.setText(Double.toString(number_of_randoms_value));
+        textfield_number_randoms.setText(Integer.toString(number_of_randoms_value));
         textfield_number_randoms.addFocusListener(this);
 
         textfield_seed = new JTextField();
-        textfield_seed.setText(Double.toString(seed_value));
+        textfield_seed.setText(Integer.toString(seed_value));
         textfield_seed.addFocusListener(this);
 
         textfield_engines_list= new JTextField();
-        textfield_engines_list.setText(Double.toString(seed_value));
+        textfield_engines_list.setText(Integer.toString(seed_value));
         textfield_engines_list.addFocusListener(this);
 
         JLabel label_number_randoms = new JLabel("Number of randoms: ");
@@ -279,8 +279,8 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
 
     private static Canvas caClassTemplate;
 
-    private static double number_of_randoms_value = 5 ;
-    private static double seed_value = 1;
+    private static int number_of_randoms_value = 5 ;
+    private static int seed_value = 1;
     private static String combobox_value = "generator261a";
 
     private static JLabel lnumeric_var_value;
@@ -311,7 +311,7 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
 //      frame.remove(window);
             task = 0;
             deleteCanvasLabels();
-            Canvas.objectNV.initializer(task);
+            Canvas.objectNV.initializer(seed_value, number_of_randoms_value, combobox_value);
             caClassTemplate.revalidate();
             caClassTemplate.repaint();
         }
@@ -355,14 +355,14 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
             deleteCanvasLabels();
             Canvas.objectNV = new RandomDisplayTask();
             Canvas.objectNV.plug(caClassTemplate);
-            Canvas.objectNV.initializer(task);
+            Canvas.objectNV.initializer(seed_value , number_of_randoms_value, combobox_value);
 
-            lnumeric_var_value = new JLabel(Double.toString(number_of_randoms_value));
+            lnumeric_var_value = new JLabel(Integer.toString(number_of_randoms_value));
             lnumeric_var_value.setFont(new Font(null, Font.PLAIN,50));
             caClassTemplate.add(lnumeric_var_value);
 
 
-            lstring_var_value = new JLabel(Double.toString(seed_value));
+            lstring_var_value = new JLabel(Integer.toString(seed_value));
             lstring_var_value.setFont(new Font(null, Font.PLAIN,50));
             caClassTemplate.add(lstring_var_value);
 
@@ -402,7 +402,7 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
                 if (e.getSource() == textfield_number_randoms) {
                     nump = textfield_number_randoms.getText();
                     if (!nump.equals("")) {
-                        number_of_randoms_value = Double.parseDouble(nump);
+                        number_of_randoms_value = Integer.parseInt(nump);
                         if (number_of_randoms_value < 0) {
                             number_of_randoms_value = 0;
                             throw new Exception("Invalid Number");
@@ -422,7 +422,7 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
 
             if(e.getSource() == textfield_seed) {
                 nump = textfield_seed.getText();
-                seed_value = Double.parseDouble(nump);
+                seed_value = Integer.parseInt(nump);
 
             }
 
@@ -431,7 +431,8 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
             JComboBox<String> cb = (JComboBox<String>)e.getSource();
             String op = (String)cb.getSelectedItem();
             assert op != null;
-            op = op.toLowerCase();
+//            op = op.toLowerCase();
+            combobox_value = op;
         }
 
     }
