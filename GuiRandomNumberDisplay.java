@@ -114,7 +114,7 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
 
     private static JButton initialize_button, start_button, stop_button;
 
-    private static JComboBox  generator_list_combo_box;
+    private static JComboBox<String>  generator_list_combo_box;
 
     private JSplitPane createTextFields() {
 
@@ -150,7 +150,7 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
         JLabel[] labels = {label_number_randoms, label_seed, label_engines};
 
         JTextField[] textFields = {textfield_number_randoms, textfield_seed};
-        generator_list_combo_box = new JComboBox(engine_generator_names);
+        generator_list_combo_box = new JComboBox<>(engine_generator_names);
         generator_list_combo_box.addFocusListener(this);
 
         JComboBox[] combo_box_list = {generator_list_combo_box};
@@ -212,21 +212,24 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
 
         	labels[i].setFont(new Font(null, Font.PLAIN,20));
         	textFields[i].setFont(new Font(null, Font.PLAIN,20));
+        	textFields[i].setHorizontalAlignment(JTextField.RIGHT);
             c.gridwidth = GridBagConstraints.RELATIVE; //next-to-last
             c.fill = GridBagConstraints.NONE;      //reset to default
             c.weightx = 1.0;                       //reset to default
-//            c.gridheight = 19;
+//            c.gridheight = 50;
             container.add(labels[i], c);
+
  
             c.gridwidth = GridBagConstraints.REMAINDER;     //end row
             c.fill = GridBagConstraints.NONE;
             c.weightx = 1.0;
-            textFields[i].setColumns(3);
+            textFields[i].setColumns(5);
             container.add(textFields[i], c);
         }
 
         labels[numLabels-1].setFont(new Font(null, Font.PLAIN,20));
         combo_box_list[0].setFont(new Font(null, Font.PLAIN,20));
+        ((JLabel)combo_box_list[0].getRenderer()).setHorizontalAlignment(JLabel.CENTER);
         c.gridwidth = GridBagConstraints.RELATIVE; //next-to-last
         c.fill = GridBagConstraints.NONE;      //reset to default
         c.weightx = 1.0;                       //reset to default
