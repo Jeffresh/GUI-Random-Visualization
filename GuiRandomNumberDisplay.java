@@ -92,7 +92,7 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
         Dimension navbar_dimension = new Dimension(200,40);
         Map<String, String[] > menu_items = new HashMap<>();
 
-        menu_items.put("File", new String[]{"Item menu 1", "Item menu 2"});
+        menu_items.put("File", new String[]{"Random Generators"});
         menu_items.put("Plot", new String[]{"Chart 1"});
         menu_items.put("Help", new String[]{"Help message"});
         menu_items.put("About", new String[]{"About message"});
@@ -309,21 +309,11 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
 
         if(e.getSource() == nav_bar.getMenu(0).getItem(0)) {
 //      frame.remove(window);
-            task = 2;
+            task = 0;
             deleteCanvasLabels();
             Canvas.objectNV.initializer(task);
             caClassTemplate.revalidate();
             caClassTemplate.repaint();
-        }
-
-        if(e.getSource() == nav_bar.getMenu(0).getItem(1)) {
-
-            task = 3;
-            deleteCanvasLabels();
-            Canvas.objectNV.initializer(task);
-            caClassTemplate.revalidate();
-            caClassTemplate.repaint();
-
         }
 
         if(e.getSource() == nav_bar.getMenu(1).getItem(0)){
@@ -398,15 +388,14 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
             worker.execute();
         }
 
+
     }
 
     public void focusGained(FocusEvent e) {
     	//nothing
-
 	}
 	public void focusLost(FocusEvent e) {
             String nump;
-
 
             try {
 
@@ -437,16 +426,13 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
 
             }
 
-            if(e.getSource() == generator_list_combo_box)
- 	        {
- 	        	JComboBox<String> cb = (JComboBox<String>)e.getSource();
- 	            String op = (String)cb.getSelectedItem();
-                assert op != null;
-                op = op.toLowerCase();
-
-
- 	        }
-
+        if(e.getSource() == generator_list_combo_box)
+        {
+            JComboBox<String> cb = (JComboBox<String>)e.getSource();
+            String op = (String)cb.getSelectedItem();
+            assert op != null;
+            op = op.toLowerCase();
+        }
 
     }
     
