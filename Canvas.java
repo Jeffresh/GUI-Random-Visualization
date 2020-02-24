@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 /**
@@ -19,6 +21,7 @@ class Canvas extends JPanel {
     public static BufferedImage image_ref;
     public static int xMax;
     public static int yMax;
+    public static int scale_rate =1;
 
 
     /** Constructor of the class that works as a link between the classNV and the GUI */
@@ -28,7 +31,6 @@ class Canvas extends JPanel {
         objectNV.plug(this);
         xMax = x_max;
         yMax = y_max;
-
         image_ref = new BufferedImage(xMax, yMax,BufferedImage.TYPE_BYTE_INDEXED);
 
     }
@@ -66,7 +68,19 @@ class Canvas extends JPanel {
             }
         }
 
+        return ScaleImage(scale_rate);
+    }
+
+    public BufferedImage ScaleImage(int scale_rate){
+        BufferedImage mask = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
+        AffineTransform at = new AffineTransform();
+        at.scale(scale_rate, scale_rate);
+        AffineTransformOp scaleOp =
+                new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
+        image_ref = scaleOp.filter(image_ref, mask);
+
         return image_ref;
+
     }
 
     @Override
