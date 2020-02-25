@@ -110,7 +110,7 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
         return nav_bar;
     }
 
-    private static JTextField textfield_number_randoms, textfield_seed, textfield_engines_list;
+    private static JTextField textfield_number_randoms, textfield_seed, textfield_engines_list, textfield_scale_image;
 
     private static JButton initialize_button, start_button, stop_button;
 
@@ -126,15 +126,22 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
         textfield_seed.setText(Integer.toString(seed_value));
         textfield_seed.addFocusListener(this);
 
-        textfield_engines_list= new JTextField();
+        textfield_engines_list = new JTextField();
         textfield_engines_list.setText(Integer.toString(seed_value));
         textfield_engines_list.addFocusListener(this);
+
+        textfield_scale_image = new JTextField();
+        textfield_scale_image.setText(Integer.toString(scale_value));
+        textfield_scale_image.addFocusListener(this);
 
         JLabel label_number_randoms = new JLabel("Number of randoms: ");
         label_number_randoms.setLabelFor(textfield_number_randoms);
 
         JLabel label_seed = new JLabel("Seed: ");
         label_seed.setLabelFor(textfield_seed);
+
+        JLabel label_scale = new JLabel("Scale image: ");
+        label_seed.setLabelFor(textfield_scale_image);
 
         JLabel label_engines = new JLabel("Random Engines");
         label_engines.setLabelFor(textfield_engines_list);
@@ -147,9 +154,9 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
         textControlsPane.setPreferredSize(new Dimension(100, 900));
         textControlsPane.setMinimumSize(new Dimension(100, 900));
 
-        JLabel[] labels = {label_number_randoms, label_seed, label_engines};
+        JLabel[] labels = {label_number_randoms, label_seed, label_scale, label_engines};
 
-        JTextField[] textFields = {textfield_number_randoms, textfield_seed};
+        JTextField[] textFields = {textfield_number_randoms, textfield_seed, textfield_scale_image};
         generator_list_combo_box = new JComboBox<>(engine_generator_names);
         generator_list_combo_box.addFocusListener(this);
 
@@ -282,6 +289,7 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
     private static int number_of_randoms_value = 5 ;
     private static int seed_value = 1;
     private static String combobox_value = "generator261a";
+    private static int scale_value = 1;
 
     private static JLabel lnumeric_var_value;
     private static JLabel lstring_var_value;
@@ -356,6 +364,7 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
             Canvas.objectNV = new RandomDisplayTask();
             Canvas.objectNV.plug(caClassTemplate);
             Canvas.objectNV.initializer(seed_value , number_of_randoms_value, combobox_value);
+            Canvas.scale_rate = scale_value;
 
             lnumeric_var_value = new JLabel(Integer.toString(number_of_randoms_value));
             lnumeric_var_value.setFont(new Font(null, Font.PLAIN,50));
@@ -425,14 +434,19 @@ public class GuiRandomNumberDisplay extends Frame implements ActionListener, Foc
 
             }
 
-        if(e.getSource() == generator_list_combo_box)
-        {
-            JComboBox<String> cb = (JComboBox<String>)e.getSource();
-            String op = (String)cb.getSelectedItem();
-            assert op != null;
-//            op = op.toLowerCase();
-            combobox_value = op;
-        }
+            if(e.getSource() == generator_list_combo_box)
+            {
+                JComboBox<String> cb = (JComboBox<String>)e.getSource();
+                String op = (String)cb.getSelectedItem();
+                assert op != null;
+    //            op = op.toLowerCase();
+                combobox_value = op;
+            }
+            if(e.getSource() == textfield_scale_image)
+            {
+                nump = textfield_scale_image.getText();
+                scale_value = Integer.parseInt(nump);
+            }
 
     }
     
