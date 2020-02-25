@@ -39,6 +39,8 @@ public class RandomDisplayTask
         abort = true;
     }
 
+
+
     public void computeClassNV(int color) {
 
         abort = false;
@@ -46,18 +48,37 @@ public class RandomDisplayTask
         int random_generated;
         rg.reset();
 
-        for(int i = 1; i < seq_len; i++){
-            if(abort)
-                break;
-            random_generated = rg.getIthRandomNumber(handler.engines.get(random_engine), seed,i).intValue()%1000;
-            System.out.println(random_generated);
-            if(i%2==1)
-                point_value= random_generated%1000;
-            else{
-                matrix[point_value][random_generated]=color;
-                canvasTemplateRef.paintImmediately(0,0,1000,1000);
+        if (!random_engine.equals("generatorCombinedWXY")) {
+            for (int i = 1; i < seq_len; i++) {
+                if (abort)
+                    break;
+                random_generated = rg.getIthRandomNumber(handler.engines.get(random_engine), seed, i).intValue() % 1000;
+                if (i % 2 == 1)
+                    point_value = random_generated % 1000;
+                else {
+                    matrix[point_value][random_generated] = color;
+                    canvasTemplateRef.paintImmediately(0, 0, 1000, 1000);
+                }
             }
         }
+        else {
+
+            for (int i = 1; i < seq_len; i++) {
+                if (abort)
+                    break;
+                random_generated = rg.getIthRandomNumberCombined(handler.combined_engines.get(random_engine),
+                        handler.engines.get("generatorCombinedW"), handler.engines.get("generatorCombinedY"),
+                        handler.engines.get("generatorCombinedX"),
+                        seed, seed, seed, i).intValue() % 1000;
+                if (i % 2 == 1)
+                    point_value = random_generated % 1000;
+                else {
+                    matrix[point_value][random_generated] = color;
+                    canvasTemplateRef.paintImmediately(0, 0, 1000, 1000);
+                }
+            }
+
+        }
     }
-    
+
 }
