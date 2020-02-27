@@ -13,9 +13,6 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.lang.Math.floor;
-
-
 /**
      * GuiTemplate.java
      * Purpose: this program
