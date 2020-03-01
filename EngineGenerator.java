@@ -17,7 +17,7 @@ public class EngineGenerator {
     public Map<String, RandomEngine> engines;
     public Map<String, RandomCombinedEngine> combined_engines;
 
-    public static BigInteger two_pow_31_minus_one = BigInteger.valueOf(32363);
+    public static BigInteger two_pow_31_minus_one = BigInteger.valueOf(2147483647);
 
     public EngineGenerator() {
         this.engines = new HashMap<String, RandomEngine>();
@@ -48,18 +48,19 @@ public class EngineGenerator {
         RandomEngine generatorFishmanAndMoore2 = (a) -> a.multiply(BigInteger.valueOf(69621)).mod(two_pow_31_minus_one);
         this.engines.put("generatorFishmanAndMore2", generatorFishmanAndMoore2);
 
-        RandomEngine generatorRandu = (a) -> a.multiply(BigInteger.valueOf(65539)).mod(two_pow_31_minus_one);
+        RandomEngine generatorRandu = (a) -> a.multiply(BigInteger.valueOf(65539)).mod(BigInteger.valueOf(2147483647).
+                add(BigInteger.valueOf(1)));
         this.engines.put("generatorRandu", generatorRandu);
-        RandomEngine generatorCombinedw = (a) -> a.multiply(BigInteger.valueOf(157)).mod(two_pow_31_minus_one);
+        RandomEngine generatorCombinedw = (a) -> a.multiply(BigInteger.valueOf(157)).mod(BigInteger.valueOf(32363));
         this.engines.put("generatorCombinedW", generatorCombinedw);
 
-        RandomEngine generatorCombinedy = (a) -> a.multiply(BigInteger.valueOf(157)).mod(two_pow_31_minus_one);
+        RandomEngine generatorCombinedy = (a) -> a.multiply(BigInteger.valueOf(142)).mod(BigInteger.valueOf(31657));
         this.engines.put("generatorCombinedY", generatorCombinedy);
 
-        RandomEngine generatorCombinedx = (a) -> a.multiply(BigInteger.valueOf(157)).mod(two_pow_31_minus_one);
+        RandomEngine generatorCombinedx = (a) -> a.multiply(BigInteger.valueOf(146)).mod(BigInteger.valueOf(31727));
         this.engines.put("generatorCombinedX", generatorCombinedx);
 
-        RandomCombinedEngine generatorCombinedWXY = (w, x, y) -> w.subtract(x).add(y).mod(two_pow_31_minus_one);
+        RandomCombinedEngine generatorCombinedWXY = (w, x, y) -> (w.subtract(x).add(y)).mod(BigInteger.valueOf(32362));
         this.combined_engines.put("generatorCombinedWXY", generatorCombinedWXY);
     }
     
