@@ -13,5 +13,6 @@ they are generating pseudorandom numbers.
 The implementation is coded in _Java 8.0_ and the _GUI_ using the _framework_ _Swing_. 
 The (PRNG) are implemented using lambda functions being easy to add new ones.
 
+![Gui](/assets/random-generator.jpg?raw=true "title")
 
 # In Construction!
